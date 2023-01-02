@@ -1,15 +1,15 @@
-module me.oussa.jfxtp {
+module me.oussa.ensaschat {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
 
 
-    opens me.oussa.jfxtp to javafx.fxml;
-    exports me.oussa.jfxtp;
-    exports me.oussa.jfxtp.common;
-    opens me.oussa.jfxtp.common to javafx.fxml;
-    exports me.oussa.jfxtp.controller;
-    opens me.oussa.jfxtp.controller to javafx.fxml;
-    exports me.oussa.jfxtp.service;
-    opens me.oussa.jfxtp.service to javafx.fxml;
+    opens me.oussa.ensaschat to javafx.fxml;
+    exports me.oussa.ensaschat;
+    exports me.oussa.ensaschat.common;
+    opens me.oussa.ensaschat.common to javafx.fxml;
+    exports me.oussa.ensaschat.controller;
+    opens me.oussa.ensaschat.controller to javafx.fxml;
+    exports me.oussa.ensaschat.service;
+    opens me.oussa.ensaschat.service to javafx.fxml;
 }
