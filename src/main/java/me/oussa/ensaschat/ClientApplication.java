@@ -1,77 +1,51 @@
 package me.oussa.ensaschat;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import me.oussa.ensaschat.common.ServerInterface;
 import me.oussa.ensaschat.controller.ClientController;
-import me.oussa.ensaschat.service.ClientService;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.util.Random;
 
 
 public class ClientApplication extends Application {
-
-    ClientController clientController;
-
-    ClientService clientService;
-
-    ServerInterface serverInterface;
+    ClientController controller;
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("Main.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Chat Client");
         stage.setScene(scene);
 
-        // get the controller from the fxml file
-        clientController = fxmlLoader.getController();
+        controller = ClientController.getInstance();
 
-        try {
-            initConnection();
+        if (controller.connectToServer()) {
+            String username = "Client " + new Random().nextInt(1000);
+            if (!controller.signIn(username)) {
+                Platform.exit();
+            }
             stage.show();
-        } catch (Exception e) {
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Server is offline or connection not available");
             alert.showAndWait();
             System.exit(0);
         }
-
     }
-
-    public void initConnection() throws RemoteException, MalformedURLException, NotBoundException {
-        // create client service and pass this controller to it
-        clientService = new ClientService(clientController);
-        // get server interface using RMI
-        serverInterface = (ServerInterface) Naming.lookup("testRMI");
-
-        // pass client service and server interface to the controller
-        clientController.setClientService(clientService);
-        clientController.setServerInterface(serverInterface);
-
-        // send client service to server so that the server can use it
-        serverInterface.addClient(clientService);
-    }
-
 
     @Override
+    // TODO (fix): when intellij stop the application this doesn't get called
     public void stop() {
-        try {
-            serverInterface.removeClient(clientService);
-        } catch (Exception e) {
-            System.out.println("Server is offline or connection not available");
-        }
+        System.out.println("Closing application");
+        controller.signOut();
         System.exit(0);
     }
+
 
     public static void main(String[] args) {
         launch();

@@ -1,62 +1,90 @@
 package me.oussa.ensaschat.controller;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
-import me.oussa.ensaschat.common.ClientInterface;
+
+import javafx.application.Platform;
 import me.oussa.ensaschat.common.ServerInterface;
 import me.oussa.ensaschat.service.ClientService;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * The controller that groups all the controllers (ig?)
+ **/
 public class ClientController {
-    @FXML
-    private TextArea messageText;
-    @FXML
-    private TextArea outputText;
-    @FXML
-    private ListView<String> clientListView;
 
+    private ClientService clientService;
     private ServerInterface serverInterface;
-    protected ClientService clientService;
+    private MainController mainController;
 
-    public void setClientService(ClientService clientService) {
-        this.clientService = clientService;
-    }
+    private static ClientController instance;
+    private String clientName;
 
-    public void setServerInterface(ServerInterface serverInterface) {
-        this.serverInterface = serverInterface;
-    }
-
-    @FXML
-    protected void onSendClick() {
+    public ClientController() {
         try {
-            serverInterface.sendToAll(clientService.getClientName() + ": " + messageText.getText());
-            messageText.clear();
+            clientService = new ClientService(this);
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Server is offline or connection not available");
-            alert.showAndWait();
             e.printStackTrace();
         }
     }
 
-    public void printMessage(String message) {
-        outputText.appendText(message + "\n");
+    // Singleton pattern to ensure only one instance of the controller
+    public static ClientController getInstance() {
+        if (instance == null) {
+            instance = new ClientController();
+        }
+        return instance;
     }
 
-    public void updateClientsList(List<ClientInterface> clientsList) throws RemoteException {
-        clientListView.getItems().clear();
-        for (ClientInterface client : clientsList) {
-            clientListView.getItems().add(client.getClientName());
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    public boolean connectToServer() {
+        try {
+            // get server interface using RMI
+            serverInterface = (ServerInterface) Naming.lookup("testRMI");
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    public void updateTitle(String title) {
-        Stage stage = (Stage) messageText.getScene().getWindow();
-        stage.setTitle(title);
+    // TODO: replace with actual sign in / sign up
+    public boolean signIn(String username) {
+        // Call server to check if login is valid and get the User, if so:
+        clientName = username; // User.getUsername();
+        try {
+            serverInterface.addClient(username, clientService);
+        } catch (RemoteException e) {
+            return false;
+        }
+        mainController.updateTitle("Chat - " + clientName);
+        mainController.setUsername(clientName);
+        return true;
+    }
+
+    public void signOut() {
+        try {
+            serverInterface.removeClient(clientName);
+        } catch (RemoteException ignored) {
+        }
+    }
+
+    public void receiveMessage(String message) {
+        mainController.printMessage(message);
+    }
+
+    public void updateClientsList(List<String> clientsList) {
+        Platform.runLater(() -> mainController.updateClientsList(clientsList));
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void sendToAll(String message) throws RemoteException {
+        serverInterface.sendToAll(clientName + ": " + message);
     }
 }
