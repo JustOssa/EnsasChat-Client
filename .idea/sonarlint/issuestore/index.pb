@@ -9,5 +9,6 @@ U
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 M
 .idea/artifacts/JFXTP_jar.xml,b\7\b7fa858db591bd274215cdc0d410e196b34658f4
-N
-src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302

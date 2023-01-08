@@ -16,14 +16,6 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
         this.controller = controller;
     }
 
-    /**
-     * RMI method to get client name
-     *
-     * @return client name
-     */
-    public String getClientName() {
-        return controller.getClientName();
-    }
 
     /**
      * RMI method to receive message from server,
@@ -45,6 +37,15 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
     @Override
     public void updateClientsList(ArrayList<String> clientsList) throws RemoteException {
         controller.updateClientsList(clientsList);
+    }
+
+    /**
+     * RMI method to kick a client
+     * used from the server to kick the client when the server stops
+     */
+    @Override
+    public void getKicked() throws RemoteException {
+        controller.getKicked();
     }
 
 }

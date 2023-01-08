@@ -12,4 +12,6 @@ module me.oussa.ensaschat {
     opens me.oussa.ensaschat.controller to javafx.fxml;
     exports me.oussa.ensaschat.service;
     opens me.oussa.ensaschat.service to javafx.fxml;
+    exports me.oussa.ensaschat.model;
+    opens me.oussa.ensaschat.model to javafx.fxml;
 }

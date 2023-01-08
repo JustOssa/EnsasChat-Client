@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class MainController {
+public class MainViewController {
     @FXML
     private TextArea messageText;
     @FXML
@@ -21,10 +21,18 @@ public class MainController {
 
     private ClientController controller;
 
+    private Stage stage;
+
     @FXML
     public void initialize() {
         controller = ClientController.getInstance();
-        controller.setMainController(this);
+        controller.setMainViewController(this);
+        updateUserInfos();
+    }
+
+    private void updateUserInfos() {
+        String username = controller.getLoginClient().getUsername();
+        usernameLabel.setText(username);
     }
 
     @FXML
@@ -38,22 +46,22 @@ public class MainController {
         messageText.clear();
     }
 
+    @FXML
+    protected void onLogoutClick() {
+        Stage stage = (Stage) usernameLabel.getScene().getWindow();
+        stage.close();
+        controller.showLoginView();
+        controller.signOut();
+    }
+
     public void printMessage(String message) {
         outputText.appendText(message + "\n");
     }
 
     public void updateClientsList(List<String> clientsList) {
+        // TODO: new ClientAvatarClass(User)
         clientListView.getItems().clear();
         clientListView.getItems().addAll(clientsList);
-    }
-
-    public void updateTitle(String title) {
-        Stage stage = (Stage) messageText.getScene().getWindow();
-        stage.setTitle(title);
-    }
-
-    public void setUsername(String username) {
-        usernameLabel.setText(username);
     }
 
     public void showError(String title, String message) {
@@ -61,5 +69,13 @@ public class MainController {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

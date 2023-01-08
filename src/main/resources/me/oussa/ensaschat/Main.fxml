@@ -43,11 +43,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="456.0" prefWidth="708.0" spacing="20.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.oussa.ensaschat.controller.MainController">
+<HBox prefHeight="456.0" prefWidth="708.0" spacing="20.0" stylesheets="@assets/css/Main.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.oussa.ensaschat.controller.MainViewController">
    <children>
       <VBox>
          <children>
-            <ListView fx:id="clientListView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" stylesheets="@Main.css" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="clientListView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="70.0" spacing="10.0" styleClass="userInfoBox">
                <children>
                   <ImageView fitHeight="46.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
@@ -58,7 +58,7 @@
                   <VBox alignment="CENTER_LEFT" spacing="2.0">
                      <children>
                         <Label fx:id="usernameLabel" styleClass="userNameLabel" text="Username" />
-                        <Label styleClass="userLogoutLabel" text="Logout" />
+                        <Label onMouseClicked="#onLogoutClick" styleClass="userLogoutLabel" text="Logout" />
                      </children>
                   </VBox>
                </children>

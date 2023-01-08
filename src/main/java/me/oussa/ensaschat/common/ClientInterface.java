@@ -9,5 +9,5 @@ public interface ClientInterface extends Remote {
 
     void updateClientsList(ArrayList<String> clientsList) throws RemoteException;
 
-    String getClientName() throws RemoteException;
+    void getKicked() throws RemoteException;
 }

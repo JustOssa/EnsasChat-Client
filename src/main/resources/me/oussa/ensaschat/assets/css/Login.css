@@ -1,0 +1,69 @@
+.root {
+    -fx-font-family: 'Montserrat', sans-serif;
+}
+
+.white-bg {
+    -fx-background-color: white;
+}
+
+/* Left side */
+.leftTitle {
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 5 0;
+}
+
+.field-label {
+    -fx-text-fill: gray;
+    -fx-padding: 0 0 10 0;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(one-pass-box, #c6c0c0, 8.4575, 0, 0, 0);
+}
+
+.loginButton {
+    -fx-font-family: 'Montserrat SemiBold', sans-serif;
+    -fx-background-color: #3F51B5;
+    -fx-text-fill: white;
+}
+
+.loginButton:hover {
+    -fx-background-color: #303F9F;
+}
+
+.hintLabel {
+    -fx-text-fill: gray;
+    -fx-font-size: 12px;
+}
+
+.hintLink {
+    -fx-text-fill: #3F51B5;
+    -fx-font-size: 12px;
+}
+
+.hintLink:hover {
+    /* pointer cursor */
+    -fx-cursor: hand;
+    -fx-text-fill: #303F9F;
+}
+
+/* Right side */
+
+.right-pane {
+    -fx-background-color: #3F51B5;
+    -fx-background-image: url("../images/Shiny.png");
+    -fx-background-size: cover;
+}
+
+.rightTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.rightSubTitle {
+    -fx-text-fill: white;
+    -fx-padding: 7 0 0 0;
+}
