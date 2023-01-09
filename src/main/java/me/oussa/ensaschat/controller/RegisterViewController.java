@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
+
 import java.io.IOException;
 
 public class RegisterViewController {

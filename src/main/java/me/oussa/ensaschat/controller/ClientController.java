@@ -51,12 +51,19 @@ public class ClientController {
         this.loginViewController = loginViewController;
     }
 
+
+    /**
+     * Get current client
+     *
+     * @return the connected user
+     */
     public User getLoginClient() {
         return loginClient;
     }
 
     /**
      * Connect to the server using RMI
+     *
      * @return true if connected, false otherwise
      **/
     public boolean connectToServer() {
@@ -70,6 +77,7 @@ public class ClientController {
 
     /**
      * Sign in and add client to the server
+     *
      * @param username the username of the client.
      * @param password the password of the client.
      * @return true if signed in, false otherwise
@@ -99,13 +107,27 @@ public class ClientController {
     }
 
     /**
-     * Send a message to all online clients in the server
+     * Send a message to all online clients
+     *
      * @param message the message to send
      **/
     public void sendToAll(String message) throws RemoteException {
         serverInterface.sendToAll(loginClient.getUsername() + ": " + message);
     }
 
+    /**
+     * Get users list from server
+     *
+     * @return list of all registered users
+     */
+    public List<User> getUsers() {
+        try {
+            return serverInterface.getUsers();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Show the hidden login view
@@ -137,6 +159,7 @@ public class ClientController {
 
     /**
      * Receive a message from the server and display it in the main view
+     *
      * @param message the message to display
      */
     public void receiveMessage(String message) {
@@ -144,11 +167,12 @@ public class ClientController {
     }
 
     /**
-     * Get all online clients from the server and display them in the main view
+     * Get all online clients from the server and update them in the main view
+     *
      * @param clientsList the list of online clients
      */
-    public void updateClientsList(List<String> clientsList) {
-        Platform.runLater(() -> mainViewController.updateClientsList(clientsList));
+    public void updateOnlineUsers(List<String> clientsList) {
+        Platform.runLater(() -> mainViewController.updateOnlineUsers(clientsList));
     }
 
 

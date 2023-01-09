@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface ClientInterface extends Remote {
     void receiveMessage(String message) throws RemoteException;
 
-    void updateClientsList(ArrayList<String> clientsList) throws RemoteException;
+    void updateOnlineUsers(ArrayList<String> clientsList) throws RemoteException;
 
     void getKicked() throws RemoteException;
 }

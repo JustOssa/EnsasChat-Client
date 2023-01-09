@@ -35,12 +35,13 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
      * @param clientsList the updated list of connected clients
      */
     @Override
-    public void updateClientsList(ArrayList<String> clientsList) throws RemoteException {
-        controller.updateClientsList(clientsList);
+    public void updateOnlineUsers(ArrayList<String> clientsList) throws RemoteException {
+        controller.updateOnlineUsers(clientsList);
     }
 
+
     /**
-     * RMI method to kick a client
+     * RMI method to kick a client,
      * used from the server to kick the client when the server stops
      */
     @Override

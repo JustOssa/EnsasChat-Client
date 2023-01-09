@@ -9,6 +9,7 @@ U
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 M
 .idea/artifacts/JFXTP_jar.xml,b\7\b7fa858db591bd274215cdc0d410e196b34658f4
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+g
+7src/main/java/me/oussa/ensaschat/ClientApplication.java,b\f\bf57293a6a54a0de761bbefc9635348e111f6496
+t
+Dsrc/main/java/me/oussa/ensaschat/controller/LoginViewController.java,e\b\eb2991701f10acdc91f0c147056bbd1a8406dd3e
