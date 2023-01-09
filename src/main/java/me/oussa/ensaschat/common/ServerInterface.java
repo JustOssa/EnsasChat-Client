@@ -15,5 +15,7 @@ public interface ServerInterface extends Remote {
 
     User signIn(String username, String password) throws RemoteException;
 
+    boolean signUp(User user) throws RemoteException;
+
     List<User> getUsers() throws RemoteException;
 }

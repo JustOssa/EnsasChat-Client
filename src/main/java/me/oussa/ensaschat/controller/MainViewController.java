@@ -71,10 +71,10 @@ public class MainViewController {
         String message = messageText.getText();
         try {
             controller.sendToAll(message);
+            messageText.clear();
         } catch (Exception e) {
             showError("Error", "Server is offline or connection not available");
         }
-        messageText.clear();
     }
 
     @FXML

@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 public class LoginViewController {
     @FXML
@@ -40,16 +43,15 @@ public class LoginViewController {
     @FXML
     public void onLoginClick() {
         loginButton.setDisable(true);
-        if (controller.connectToServer()) {
-            String username = usernameInput.getText();
-            String password = passwordInput.getText();
-            if (controller.signIn(username, password)) {
-                stage.hide();   // or close() ?
+        try {
+            controller.connectToServer();
+            if (controller.signIn(usernameInput.getText(), passwordInput.getText())) {
+                stage.hide();
                 controller.showMainView();
             } else {
                 showError("Login error", "Invalid username or password");
             }
-        } else {
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             showError("Connection failed", "Could not connect to server");
         }
         loginButton.setDisable(false);

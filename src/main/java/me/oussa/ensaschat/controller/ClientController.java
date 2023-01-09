@@ -10,7 +10,9 @@ import me.oussa.ensaschat.common.ServerInterface;
 import me.oussa.ensaschat.model.User;
 import me.oussa.ensaschat.service.ClientService;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -63,16 +65,9 @@ public class ClientController {
 
     /**
      * Connect to the server using RMI
-     *
-     * @return true if connected, false otherwise
      **/
-    public boolean connectToServer() {
-        try {
-            serverInterface = (ServerInterface) Naming.lookup("testRMI");
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void connectToServer() throws MalformedURLException, NotBoundException, RemoteException {
+        serverInterface = (ServerInterface) Naming.lookup("testRMI");
     }
 
     /**
@@ -89,6 +84,21 @@ public class ClientController {
                 serverInterface.addClient(username, clientService);
                 return true;
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Sign up a new client
+     *
+     * @param user the user to sign up
+     * @return true if signed up, false otherwise
+     **/
+    public boolean signUp(User user) {
+        try {
+            return serverInterface.signUp(user);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -38,7 +38,7 @@
                   <PasswordField fx:id="passwordInput" prefHeight="35.0" prefWidth="300.0" promptText="Type your Password" />
                </children>
             </VBox>
-            <Button fx:id="registerButton" prefHeight="35.0" prefWidth="300.0" styleClass="loginButton" text="Sign up">
+            <Button fx:id="registerButton" onAction="#onSignUpClick" prefHeight="35.0" prefWidth="300.0" styleClass="loginButton" text="Sign up">
             </Button>
             <BorderPane>
                <left>
