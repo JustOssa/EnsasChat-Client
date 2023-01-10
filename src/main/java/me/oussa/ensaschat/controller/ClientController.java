@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
 import me.oussa.ensaschat.common.ServerInterface;
+import me.oussa.ensaschat.model.Message;
 import me.oussa.ensaschat.model.User;
 import me.oussa.ensaschat.service.ClientService;
 
@@ -119,10 +120,11 @@ public class ClientController {
     /**
      * Send a message to all online clients
      *
-     * @param message the message to send
+     * @param msg the message to send
      **/
-    public void sendToAll(String message) throws RemoteException {
-        serverInterface.sendToAll(loginClient.getUsername() + ": " + message);
+    public void sendToAll(String msg) throws RemoteException {
+        Message message = new Message(loginClient, msg);
+        serverInterface.sendToAll(message);
     }
 
     /**
@@ -172,8 +174,8 @@ public class ClientController {
      *
      * @param message the message to display
      */
-    public void receiveMessage(String message) {
-        mainViewController.printMessage(message);
+    public void receiveMessage(Message message) {
+        Platform.runLater(() -> mainViewController.printMessage(message));
     }
 
     /**

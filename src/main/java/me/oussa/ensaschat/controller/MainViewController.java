@@ -7,27 +7,29 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import me.oussa.ensaschat.model.Message;
 import me.oussa.ensaschat.model.User;
 import me.oussa.ensaschat.view.CustomListUserCell;
 
 import java.util.List;
 
 public class MainViewController {
+    ObservableList<User> users = FXCollections.observableArrayList();
     @FXML
     private TextArea messageText;
     @FXML
-    private TextArea outputText;
+    private VBox chatBox;
     @FXML
     private Label usernameLabel;
     @FXML
     private ListView<User> clientListView;
-
     private ClientController controller;
-
     private Stage stage;
-
-    ObservableList<User> users = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -85,8 +87,34 @@ public class MainViewController {
         controller.signOut();
     }
 
-    public void printMessage(String message) {
-        outputText.appendText(message + "\n");
+    public void printMessage(Message message) {
+        HBox messageBox = createMsgBox(message);
+        chatBox.getChildren().add(messageBox);
+    }
+
+    private HBox createMsgBox(Message message) {
+        Label msgSender;
+        if (message.getSender() == null) {
+            msgSender = new Label("Server");
+        } else {
+            msgSender = new Label(message.getSender().getUsername());
+        }
+        msgSender.setStyle("-fx-font-weight: bold");
+        Label msgTime = new Label(message.getTime());
+        msgTime.setStyle("-fx-text-fill: #9C9C9C");
+        HBox msgHeader = new HBox(msgSender, msgTime);
+        msgHeader.setSpacing(8);
+
+        Label msgContent = new Label(message.getContent());
+        msgContent.setWrapText(true);
+
+        VBox msgBody = new VBox(msgHeader, msgContent);
+
+        Image image = new Image("file:src/main/resources/me/oussa/ensaschat/assets/images/user_avatar.png", 35, 0, true, false);
+        HBox msgBox = new HBox(new ImageView(image), msgBody);
+        msgBox.setSpacing(8);
+
+        return msgBox;
     }
 
     public void showError(String title, String message) {
@@ -96,11 +124,11 @@ public class MainViewController {
         alert.showAndWait();
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     public Stage getStage() {
         return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

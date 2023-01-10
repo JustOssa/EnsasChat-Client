@@ -2,6 +2,7 @@ package me.oussa.ensaschat.service;
 
 import me.oussa.ensaschat.common.ClientInterface;
 import me.oussa.ensaschat.controller.ClientController;
+import me.oussa.ensaschat.model.Message;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -23,7 +24,7 @@ public class ClientService extends UnicastRemoteObject implements ClientInterfac
      *
      * @param message the message to receive
      **/
-    public void receiveMessage(String message) throws RemoteException {
+    public void receiveMessage(Message message) throws RemoteException {
         controller.receiveMessage(message);
     }
 

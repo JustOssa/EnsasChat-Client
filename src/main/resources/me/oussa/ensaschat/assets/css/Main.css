@@ -19,21 +19,32 @@
     -fx-padding: 10 20 10 20;
 }
 
-.userInfoBox{
+.userInfoBox {
     -fx-background-color: #ffffff;
     -fx-padding: 5 20 5 20;
     -fx-border-color: #b6b6b6;
     -fx-border-width: 0 1 1 1;
 }
-.userInfoBox .userNameLabel{
+
+.userInfoBox .userNameLabel {
     -fx-font-size: 14px;
 }
-.userInfoBox .userLogoutLabel{
+
+.userInfoBox .userLogoutLabel {
     -fx-font-size: 12px;
     -fx-text-fill: #868686;
 }
 
-.userInfoBox .userLogoutLabel:hover{
+.userInfoBox .userLogoutLabel:hover {
     -fx-text-fill: #b6b6b6;
     -fx-cursor: hand;
+}
+
+.sendBtn {
+    -fx-background-color: #3F51B5;
+    -fx-text-fill: white;
+}
+
+.chatBoxPane {
+    -fx-background: white;
 }
