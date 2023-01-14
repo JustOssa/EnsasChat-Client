@@ -3,7 +3,6 @@ package me.oussa.ensaschat.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
@@ -37,12 +36,12 @@ public class RegisterViewController {
             controller.connectToServer();
             if (controller.signUp(user)) {
                 onGoSignin();
-                showSuccess("Signup success", "You can now login");
+                controller.showSuccess("Signup success", "You can now login");
             } else {
-                showError("Signup error", "Username already exists");
+                controller.showError("Signup error", "Username already exists");
             }
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
-            showError("Connection failed", "Could not connect to server");
+            controller.showError("Connection failed", "Could not connect to server");
         }
     }
 
@@ -61,18 +60,5 @@ public class RegisterViewController {
         }
     }
 
-    public void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public void showSuccess(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
 }

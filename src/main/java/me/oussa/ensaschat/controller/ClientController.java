@@ -4,6 +4,7 @@ package me.oussa.ensaschat.controller;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
 import me.oussa.ensaschat.common.ServerInterface;
@@ -15,6 +16,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,12 +24,13 @@ import java.util.List;
  **/
 public class ClientController {
 
+    private static ClientController instance;
+    // chat windows
+    private final HashMap<String, Stage> chatWindows = new HashMap<>();
     private ClientService clientService;
     private ServerInterface serverInterface;
     private MainViewController mainViewController;
     private LoginViewController loginViewController;
-
-    private static ClientController instance;
     private User loginClient;
 
     public ClientController() {
@@ -128,6 +131,15 @@ public class ClientController {
     }
 
     /**
+     * Send a message to specific client
+     *
+     * @param message the message to send
+     **/
+    public void sendMessage(Message message) throws RemoteException {
+        serverInterface.sendMessage(message);
+    }
+
+    /**
      * Get users list from server
      *
      * @return list of all registered users
@@ -175,7 +187,15 @@ public class ClientController {
      * @param message the message to display
      */
     public void receiveMessage(Message message) {
-        Platform.runLater(() -> mainViewController.printMessage(message));
+        Platform.runLater(() -> {
+            if (message.getReceiver() == null) {
+                mainViewController.printMessage(message);
+                return;
+            }
+
+            ChatWindowViewController privateChat = openPrivateChat(message.getSender());
+            privateChat.printMessage(message);
+        });
     }
 
     /**
@@ -193,10 +213,60 @@ public class ClientController {
      */
     public void getKicked() {
         Platform.runLater(() -> {
+            closeAllChatWindows();
             mainViewController.getStage().close();
             loginViewController.getStage().show();
-            loginViewController.showError("Server is closed", "You have been kicked from the server");
+            showError("Server is closed", "You have been kicked from the server");
         });
+    }
+
+    public HashMap<String, Stage> getChatWindows() {
+        return chatWindows;
+    }
+
+    public void closeAllChatWindows() {
+        chatWindows.forEach((key, value) -> value.close());
+        chatWindows.clear();
+    }
+
+    public ChatWindowViewController openPrivateChat(User user) {
+        if (chatWindows.containsKey(user.getUsername())) {
+            return (ChatWindowViewController) chatWindows.get(user.getUsername()).getUserData();
+        }
+        try {
+            Stage chatStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("ChatWindow.fxml"));
+            chatStage.setScene(new Scene(fxmlLoader.load()));
+            chatStage.setUserData(fxmlLoader.getController());
+            chatStage.setTitle("Chat with " + user.getUsername());
+            chatStage.setResizable(false);
+            chatStage.setOnCloseRequest(event -> chatWindows.remove(user.getUsername()));
+
+            ChatWindowViewController chatWindowController = fxmlLoader.getController();
+            chatWindowController.setReceiver(user);
+            chatStage.show();
+
+            chatWindows.put(user.getUsername(), chatStage);
+
+            return chatWindowController;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void showSuccess(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

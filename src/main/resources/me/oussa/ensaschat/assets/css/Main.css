@@ -48,3 +48,8 @@
 .chatBoxPane {
     -fx-background: white;
 }
+
+.receiverInfoBox .receiverUsername {
+    -fx-font-size: 14px;
+    -fx-fill: #868686;
+}

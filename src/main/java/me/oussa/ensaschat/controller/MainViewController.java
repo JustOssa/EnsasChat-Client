@@ -3,12 +3,12 @@ package me.oussa.ensaschat.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -70,12 +70,12 @@ public class MainViewController {
 
     @FXML
     protected void onSendClick() {
-        String message = messageText.getText();
+        String message = messageText.getText().strip();
         try {
             controller.sendToAll(message);
             messageText.clear();
         } catch (Exception e) {
-            showError("Error", "Server is offline or connection not available");
+            controller.showError("Error", "Server is offline or connection not available");
         }
     }
 
@@ -83,8 +83,28 @@ public class MainViewController {
     protected void onLogoutClick() {
         Stage thisStage = (Stage) usernameLabel.getScene().getWindow();
         thisStage.close();
+        controller.closeAllChatWindows();
         controller.showLoginView();
         controller.signOut();
+    }
+
+    @FXML
+    protected void onUserClick(MouseEvent click) {
+        if (click.getClickCount() != 2) return;
+
+        User user = clientListView.getSelectionModel().getSelectedItem();
+
+        if (user.getUsername().equals(controller.getLoginClient().getUsername())) {
+            controller.showError("Error", "You can't chat with yourself");
+            return;
+        }
+
+        if (user.getStatus().equals("Offline")) {
+            controller.showError("Error", "User is offline");
+            return;
+        }
+
+        controller.openPrivateChat(user);
     }
 
     public void printMessage(Message message) {
@@ -115,13 +135,6 @@ public class MainViewController {
         msgBox.setSpacing(8);
 
         return msgBox;
-    }
-
-    public void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public Stage getStage() {

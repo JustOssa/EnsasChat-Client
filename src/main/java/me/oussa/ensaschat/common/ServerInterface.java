@@ -10,6 +10,8 @@ import java.util.List;
 public interface ServerInterface extends Remote {
     void sendToAll(Message message) throws RemoteException;
 
+    void sendMessage(Message message) throws RemoteException;
+
     void addClient(String clientName, ClientInterface client) throws RemoteException;
 
     void removeClient(String clientName) throws RemoteException;

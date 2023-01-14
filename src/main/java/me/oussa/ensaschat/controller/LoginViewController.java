@@ -3,7 +3,6 @@ package me.oussa.ensaschat.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -32,12 +31,12 @@ public class LoginViewController {
         controller.setLoginViewController(this);
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     public Stage getStage() {
         return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @FXML
@@ -49,10 +48,10 @@ public class LoginViewController {
                 stage.hide();
                 controller.showMainView();
             } else {
-                showError("Login error", "Invalid username or password");
+                controller.showError("Login error", "Invalid username or password");
             }
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
-            showError("Connection failed", "Could not connect to server");
+            controller.showError("Connection failed", "Could not connect to server");
         }
         loginButton.setDisable(false);
     }
@@ -68,13 +67,5 @@ public class LoginViewController {
             ex.printStackTrace();
         }
     }
-
-    public void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
 
 }
