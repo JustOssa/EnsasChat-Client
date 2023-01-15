@@ -220,10 +220,6 @@ public class ClientController {
         });
     }
 
-    public HashMap<String, Stage> getChatWindows() {
-        return chatWindows;
-    }
-
     public void closeAllChatWindows() {
         chatWindows.forEach((key, value) -> value.close());
         chatWindows.clear();

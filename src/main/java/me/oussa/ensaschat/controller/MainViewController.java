@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +24,8 @@ public class MainViewController {
     @FXML
     private TextArea messageText;
     @FXML
+    private ScrollPane chatScrollPane;
+    @FXML
     private VBox chatBox;
     @FXML
     private Label usernameLabel;
@@ -36,6 +39,9 @@ public class MainViewController {
         controller = ClientController.getInstance();
         controller.setMainViewController(this);
 
+        // make scroll pane always scroll to bottom when new message is added
+        chatBox.heightProperty().addListener(observable -> chatScrollPane.setVvalue(1D));
+
         // set custom list user cell
         clientListView.setCellFactory(listView1 -> new CustomListUserCell());
         // bind users observable list with listView
@@ -47,8 +53,7 @@ public class MainViewController {
 
     // load current user infos
     private void updateUserInfos() {
-        String username = controller.getLoginClient().getUsername();
-        usernameLabel.setText(username.toUpperCase());
+        usernameLabel.setText(controller.getLoginClient().getName());
     }
 
     // update users list from server db
@@ -89,6 +94,10 @@ public class MainViewController {
     }
 
     @FXML
+    protected void onSettingsClick() {
+    }
+
+    @FXML
     protected void onUserClick(MouseEvent click) {
         if (click.getClickCount() != 2) return;
 
@@ -106,7 +115,6 @@ public class MainViewController {
 
         controller.openPrivateChat(user);
     }
-
     public void printMessage(Message message) {
         HBox messageBox = createMsgBox(message);
         chatBox.getChildren().add(messageBox);

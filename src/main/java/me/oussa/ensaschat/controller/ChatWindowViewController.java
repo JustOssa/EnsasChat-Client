@@ -2,6 +2,7 @@ package me.oussa.ensaschat.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,12 +22,16 @@ public class ChatWindowViewController {
     @FXML
     private VBox chatBox;
     @FXML
+    private ScrollPane chatScrollPane;
+    @FXML
     private TextArea messageText;
     private ClientController controller;
 
     @FXML
     public void initialize() {
         controller = ClientController.getInstance();
+        // make scroll pane always scroll to bottom when new message is added
+        chatBox.heightProperty().addListener(observable -> chatScrollPane.setVvalue(1D));
     }
 
     public void setReceiver(User receiver) {
