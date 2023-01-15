@@ -21,4 +21,6 @@ public interface ServerInterface extends Remote {
     boolean signUp(User user) throws RemoteException;
 
     List<User> getUsers() throws RemoteException;
+
+    boolean updateUser(User user) throws RemoteException;
 }

@@ -95,6 +95,7 @@ public class MainViewController {
 
     @FXML
     protected void onSettingsClick() {
+        controller.showSettingsView();
     }
 
     @FXML

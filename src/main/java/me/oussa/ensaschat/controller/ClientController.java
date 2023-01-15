@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
 import me.oussa.ensaschat.common.ServerInterface;
@@ -153,6 +154,15 @@ public class ClientController {
         return null;
     }
 
+    public boolean updateUser(User user) {
+        try {
+            return serverInterface.updateUser(user);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /**
      * Show the hidden login view
      **/
@@ -220,11 +230,18 @@ public class ClientController {
         });
     }
 
+    /**
+     * Close all open private chat windows
+     */
     public void closeAllChatWindows() {
         chatWindows.forEach((key, value) -> value.close());
         chatWindows.clear();
     }
 
+
+    /**
+     * Open a new private chat window or return the existing one
+     **/
     public ChatWindowViewController openPrivateChat(User user) {
         if (chatWindows.containsKey(user.getUsername())) {
             return (ChatWindowViewController) chatWindows.get(user.getUsername()).getUserData();
@@ -249,6 +266,24 @@ public class ClientController {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    /**
+     * Create and show the settings view
+     **/
+    public void showSettingsView() {
+        try {
+            Stage settingsStage = new Stage();
+            settingsStage.initModality(Modality.APPLICATION_MODAL); // Block events to other windows
+            FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("Settings.fxml"));
+            settingsStage.setScene(new Scene(fxmlLoader.load()));
+            settingsStage.setResizable(false);
+            settingsStage.setTitle("Settings");
+            settingsStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showError(String title, String message) {

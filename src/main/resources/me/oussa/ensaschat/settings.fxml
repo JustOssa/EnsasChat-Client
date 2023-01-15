@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefWidth="360.0" spacing="18.0" stylesheets="@assets/css/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.oussa.ensaschat.controller.SettingsViewController">
+   <children>
+      <ImageView fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/images/avatar.png" />
+         </image>
+      </ImageView>
+      <VBox>
+         <children>
+            <Label styleClass="field-label" text="Name" />
+            <TextField fx:id="nameInput" prefHeight="35.0" prefWidth="300.0" promptText="Type your username" />
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <Label styleClass="field-label" text="Email" />
+            <TextField fx:id="usernameInput" editable="false" prefHeight="35.0" prefWidth="300.0" promptText="Type your username" />
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <Label styleClass="field-label" text="Password" />
+            <PasswordField fx:id="passwordInput" prefHeight="35.0" prefWidth="300.0" promptText="Type your Password" />
+         </children>
+      </VBox>
+      <Button onAction="#onUpdateClick" prefHeight="35.0" prefWidth="300.0" styleClass="loginButton" text="Update" />
+   </children>
+   <padding>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </padding>
+</VBox>
