@@ -9,6 +9,8 @@ public class User implements Serializable {
     private String name;
     private String username;
     private String password;
+
+    private byte[] image;
     private String status;
 
     public User() {
@@ -64,5 +66,13 @@ public class User implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

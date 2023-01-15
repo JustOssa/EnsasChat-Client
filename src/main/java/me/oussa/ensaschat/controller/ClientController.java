@@ -5,6 +5,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.oussa.ensaschat.ClientApplication;
@@ -13,6 +18,7 @@ import me.oussa.ensaschat.model.Message;
 import me.oussa.ensaschat.model.User;
 import me.oussa.ensaschat.service.ClientService;
 
+import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -284,6 +290,44 @@ public class ClientController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Create message component from message object
+     *
+     * @param message the message to create the component from
+     * @return the message component
+     */
+    public HBox createMsgBox(Message message) {
+        Label msgSender;
+        Image image;
+        if (message.getSender() == null) {
+            msgSender = new Label("Server");
+            image = new Image(ClientApplication.class.getResourceAsStream("assets/images/user_avatar.png"), 35, 0, true, false);
+        } else {
+            msgSender = new Label(message.getSender().getUsername());
+            if (message.getSender().getImage() != null) {
+                image = new Image(new ByteArrayInputStream(message.getSender().getImage()), 35, 0, true, true);
+            } else {
+                image = new Image(ClientApplication.class.getResourceAsStream("assets/images/user_avatar.png"), 35, 0, true, false);
+            }
+        }
+        msgSender.setStyle("-fx-font-weight: bold");
+        Label msgTime = new Label(message.getTime());
+        msgTime.setStyle("-fx-text-fill: #9C9C9C");
+        HBox msgHeader = new HBox(msgSender, msgTime);
+        msgHeader.setSpacing(8);
+
+        Label msgContent = new Label(message.getContent());
+        msgContent.setWrapText(true);
+
+        VBox msgBody = new VBox(msgHeader, msgContent);
+
+        HBox msgBox = new HBox(new ImageView(image), msgBody);
+        msgBox.setSpacing(8);
+
+        return msgBox;
     }
 
     public void showError(String title, String message) {

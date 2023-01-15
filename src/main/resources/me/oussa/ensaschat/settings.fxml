@@ -7,15 +7,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefWidth="360.0" spacing="18.0" stylesheets="@assets/css/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.oussa.ensaschat.controller.SettingsViewController">
+<VBox alignment="CENTER" fillWidth="false" prefWidth="360.0" spacing="18.0" stylesheets="@assets/css/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.oussa.ensaschat.controller.SettingsViewController">
    <children>
-      <ImageView fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@assets/images/avatar.png" />
-         </image>
-      </ImageView>
+      <StackPane>
+         <children>
+            <ImageView fx:id="userImage" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/images/user_avatar.png" />
+               </image>
+            </ImageView>
+            <Button mnemonicParsing="false" onAction="#onUploadImageClick" prefHeight="34.0" prefWidth="34.0" styleClass="uploadButton" StackPane.alignment="BOTTOM_RIGHT">
+               <graphic>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/images/upload.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </StackPane>
       <VBox>
          <children>
             <Label styleClass="field-label" text="Name" />

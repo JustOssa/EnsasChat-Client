@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import me.oussa.ensaschat.model.User;
 
+import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class CustomListUserCell extends ListCell<User> {
@@ -18,11 +19,6 @@ public class CustomListUserCell extends ListCell<User> {
     private final Text name;
     private final Text username;
     private final Circle profileImage;
-    private final String[] images = {
-            "file:src/main/resources/me/oussa/ensaschat/assets/images/avatar.png",
-            "file:src/main/resources/me/oussa/ensaschat/assets/images/avatar2.png",
-            "file:src/main/resources/me/oussa/ensaschat/assets/images/avatar3.png"
-    };
 
     public CustomListUserCell() {
         super();
@@ -30,7 +26,7 @@ public class CustomListUserCell extends ListCell<User> {
         name.setStyle("-fx-font-weight: bold");
         username = new Text();
         username.setFill(Paint.valueOf("#898989"));
-        Image image = new Image("file:src/main/resources/me/oussa/ensaschat/assets/images/user_avatar.png", 35, 0, true, true);
+        Image image = new Image("file:src/main/resources/me/oussa/ensaschat/assets/images/user_avatar.png", 35, 0, true, false);
         profileImage = new Circle(17, new ImagePattern(image));
         profileImage.setStroke(Paint.valueOf("#dc3545"));
         profileImage.setStrokeWidth(2);
@@ -45,8 +41,10 @@ public class CustomListUserCell extends ListCell<User> {
         if (item != null && !empty) { // <== test for null item and empty parameter
             name.setText(item.getName());
             username.setText("@" + item.getUsername());
-            String imageLink = images[Objects.hash(item.getUsername()) % images.length];
-            profileImage.setFill(new ImagePattern(new Image(imageLink, 37, 0, true, true)));
+            if (item.getImage() != null) {
+                Image image = new Image(new ByteArrayInputStream(item.getImage()), 35, 0, true, true);
+                profileImage.setFill(new ImagePattern(image));
+            }
             if (Objects.equals(item.getStatus(), "Online")) {
                 profileImage.setStroke(Paint.valueOf("#28a745"));
             }

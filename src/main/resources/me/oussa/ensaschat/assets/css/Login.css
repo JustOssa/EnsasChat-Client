@@ -31,6 +31,7 @@
 
 .loginButton:hover {
     -fx-background-color: #303F9F;
+    -fx-cursor: hand;
 }
 
 .hintLabel {
@@ -66,4 +67,15 @@
 .rightSubTitle {
     -fx-text-fill: white;
     -fx-padding: 7 0 0 0;
+}
+
+.uploadButton {
+    -fx-background-radius: 50;
+    -fx-background-color: #3F51B5;
+    -fx-text-fill: white;
+}
+
+.uploadButton:hover {
+    -fx-background-color: #303F9F;
+    -fx-cursor: hand;
 }

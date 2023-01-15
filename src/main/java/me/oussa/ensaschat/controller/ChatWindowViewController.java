@@ -1,7 +1,6 @@
 package me.oussa.ensaschat.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -12,6 +11,8 @@ import javafx.scene.text.Text;
 import me.oussa.ensaschat.model.Message;
 import me.oussa.ensaschat.model.User;
 
+import java.io.ByteArrayInputStream;
+
 public class ChatWindowViewController {
 
     private User receiver;
@@ -19,6 +20,9 @@ public class ChatWindowViewController {
     private Text receiverName;
     @FXML
     private Text receiverUsername;
+
+    @FXML
+    private ImageView receiverImage;
     @FXML
     private VBox chatBox;
     @FXML
@@ -38,6 +42,9 @@ public class ChatWindowViewController {
         this.receiver = receiver;
         receiverName.setText(receiver.getName());
         receiverUsername.setText("@" + receiver.getUsername());
+        if (receiver.getImage() != null) {
+            receiverImage.setImage(new Image(new ByteArrayInputStream(receiver.getImage())));
+        }
     }
 
     @FXML
@@ -57,33 +64,8 @@ public class ChatWindowViewController {
     }
 
     public void printMessage(Message message) {
-        HBox messageBox = createMsgBox(message);
+        HBox messageBox = controller.createMsgBox(message);
         chatBox.getChildren().add(messageBox);
-    }
-
-    private HBox createMsgBox(Message message) {
-        Label msgSender;
-        if (message.getSender() == null) {
-            msgSender = new Label("Server");
-        } else {
-            msgSender = new Label(message.getSender().getUsername());
-        }
-        msgSender.setStyle("-fx-font-weight: bold");
-        Label msgTime = new Label(message.getTime());
-        msgTime.setStyle("-fx-text-fill: #9C9C9C");
-        HBox msgHeader = new HBox(msgSender, msgTime);
-        msgHeader.setSpacing(8);
-
-        Label msgContent = new Label(message.getContent());
-        msgContent.setWrapText(true);
-
-        VBox msgBody = new VBox(msgHeader, msgContent);
-
-        Image image = new Image("file:src/main/resources/me/oussa/ensaschat/assets/images/user_avatar.png", 35, 0, true, false);
-        HBox msgBox = new HBox(new ImageView(image), msgBody);
-        msgBox.setSpacing(8);
-
-        return msgBox;
     }
 
 }

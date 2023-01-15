@@ -17,6 +17,7 @@ import me.oussa.ensaschat.model.Message;
 import me.oussa.ensaschat.model.User;
 import me.oussa.ensaschat.view.CustomListUserCell;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class MainViewController {
@@ -29,6 +30,9 @@ public class MainViewController {
     private VBox chatBox;
     @FXML
     private Label usernameLabel;
+
+    @FXML
+    private ImageView userAvatar;
     @FXML
     private ListView<User> clientListView;
     private ClientController controller;
@@ -54,6 +58,10 @@ public class MainViewController {
     // load current user infos
     private void updateUserInfos() {
         usernameLabel.setText(controller.getLoginClient().getName());
+        if (controller.getLoginClient().getImage() != null) {
+            userAvatar.setImage(new Image(new ByteArrayInputStream(controller.getLoginClient().getImage())));
+        }
+
     }
 
     // update users list from server db
@@ -116,34 +124,10 @@ public class MainViewController {
 
         controller.openPrivateChat(user);
     }
+
     public void printMessage(Message message) {
-        HBox messageBox = createMsgBox(message);
+        HBox messageBox = controller.createMsgBox(message);
         chatBox.getChildren().add(messageBox);
-    }
-
-    private HBox createMsgBox(Message message) {
-        Label msgSender;
-        if (message.getSender() == null) {
-            msgSender = new Label("Server");
-        } else {
-            msgSender = new Label(message.getSender().getUsername());
-        }
-        msgSender.setStyle("-fx-font-weight: bold");
-        Label msgTime = new Label(message.getTime());
-        msgTime.setStyle("-fx-text-fill: #9C9C9C");
-        HBox msgHeader = new HBox(msgSender, msgTime);
-        msgHeader.setSpacing(8);
-
-        Label msgContent = new Label(message.getContent());
-        msgContent.setWrapText(true);
-
-        VBox msgBody = new VBox(msgHeader, msgContent);
-
-        Image image = new Image("file:src/main/resources/me/oussa/ensaschat/assets/images/user_avatar.png", 35, 0, true, false);
-        HBox msgBox = new HBox(new ImageView(image), msgBody);
-        msgBox.setSpacing(8);
-
-        return msgBox;
     }
 
     public Stage getStage() {
